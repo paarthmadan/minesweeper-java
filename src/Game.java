@@ -1,17 +1,25 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class Game {
+
+public class Game implements ActionListener{
 	
-	JFrame frame = new JFrame("Minesweeper");
+	
+	final String TITLE = "Minesweeper";
+	
+	JFrame frame = new JFrame(TITLE);
 	
 	Container tileGrid = new Container();
 	
 	JButton[][] tiles;
+	
+	int [][] vals;
 	
 	public Game(int width, int height, int gridSize){
 		
@@ -23,21 +31,52 @@ public class Game {
 		
 		tiles = new JButton[gridSize][gridSize];
 		
+		vals = new int[gridSize][gridSize];
+		
+		//for now setting them with numerical order,
+		//will have algorthim to correctly insert vals
+		
+		int counter = 1;
+		
+		for(int i = 0; i < vals.length; i++){
+			for(int j = 0; j < vals[0].length;j++){
+				vals[i][j] = counter;
+				counter++;
+			}
+		}
+		
+		
+		
 		tileGrid.setLayout(new GridLayout(gridSize, gridSize));
 		
 		
 		for(int i = 0; i < gridSize; i++){
 			for(int j = 0; j < gridSize; j++){
 				tiles[i][j] = new JButton();
+				
+				tiles[i][j].addActionListener(this);
+				tiles[i][j].setActionCommand(i + " " + j);
+				
 				tileGrid.add(tiles[i][j]);
 			}
 		}
-		
-		
+
 		frame.setLayout(new BorderLayout());
 		frame.add(tileGrid, BorderLayout.CENTER);
 		
 		frame.setVisible(true);
+	}
+	
+	public void actionPerformed(ActionEvent event){
+
+		String numbers = event.getActionCommand();
+		
+		int x = Integer.parseInt( numbers.substring( 0, numbers.indexOf(" ") ) );
+		int y = Integer.parseInt( numbers.substring( numbers.indexOf(" ") + 1 ) );
+	
+		tiles[x][y].setText(String.valueOf(vals[x][y]));
+		
+		
 	}
 	
 
