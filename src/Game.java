@@ -13,7 +13,7 @@ public class Game implements ActionListener{
 	
 	final String TITLE = "Minesweeper";
 	
-	final int NUMBER_OF_MINES = 10;
+	
 	
 	JFrame frame = new JFrame(TITLE);
 	
@@ -23,35 +23,10 @@ public class Game implements ActionListener{
 	
 	char [][] boardVals;
 	
-	public Game(int width, int height, int gridSize){
-		
-		String countString = "";
-		
-		for(int i = 0; i < gridSize * gridSize; i++){
-			countString += ".";
-		}
-		
-		char [] vals = countString.toCharArray();
-		
-		for(int i = 0; i < NUMBER_OF_MINES; i++){
-			int random = (int) (Math.random() * (gridSize * gridSize));
-			
-			if(vals[random] == '*'){
-				i--;
-			}else{
-				vals[random] = '*';
-			}
-			
-		}
-		
-		String finalString = "";
-		
-		for(int i = 0; i < vals.length; i++){
-			finalString += vals[i];
-		}
+	public Game(int width, int height, int gridSize, int numberOfMines){
 		
 		
-		GameLogic gl = new GameLogic(String.valueOf(gridSize) + "," + String.valueOf(gridSize) + ";" + finalString);
+		GameLogic gl = new GameLogic(gridSize, numberOfMines);
 		
 		String gridVals = gl.finalString;
 		
@@ -114,7 +89,7 @@ public class Game implements ActionListener{
 	
 	
 	public static void main(String [] args){
-		new Game(300, 300, 10);
+		new Game(300, 300, 10, 10);
 	}
 }
 
