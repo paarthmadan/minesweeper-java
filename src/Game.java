@@ -13,15 +13,59 @@ public class Game implements ActionListener{
 	
 	final String TITLE = "Minesweeper";
 	
+	final int NUMBER_OF_MINES = 10;
+	
 	JFrame frame = new JFrame(TITLE);
 	
 	Container tileGrid = new Container();
 	
 	JButton[][] tiles;
 	
-	int [][] vals;
+	char [][] boardVals;
 	
 	public Game(int width, int height, int gridSize){
+		
+		String countString = "";
+		
+		for(int i = 0; i < gridSize * gridSize; i++){
+			countString += ".";
+		}
+		
+		char [] vals = countString.toCharArray();
+		
+		for(int i = 0; i < NUMBER_OF_MINES; i++){
+			int random = (int) (Math.random() * (gridSize * gridSize));
+			
+			if(vals[random] == '*'){
+				i--;
+			}else{
+				vals[random] = '*';
+			}
+			
+		}
+		
+		String finalString = "";
+		
+		for(int i = 0; i < vals.length; i++){
+			finalString += vals[i];
+		}
+		
+		
+		GameLogic gl = new GameLogic(String.valueOf(gridSize) + "," + String.valueOf(gridSize) + ";" + finalString);
+		
+		String gridVals = gl.finalString;
+		
+		boardVals = new char[gridSize][gridSize];
+		
+		int iterator = 0;
+		
+		for(int i = 0; i < gridSize; i++){
+			for(int j = 0; j < gridSize; j++){
+				boardVals[i][j] = gridVals.charAt(iterator);
+				iterator++;
+			}
+		}
+		
 		
 		frame.setSize(width, height);
 		
@@ -30,22 +74,7 @@ public class Game implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		tiles = new JButton[gridSize][gridSize];
-		
-		vals = new int[gridSize][gridSize];
-		
-		//for now setting them with numerical order,
-		//will have algorthim to correctly insert vals
-		
-		int counter = 1;
-		
-		for(int i = 0; i < vals.length; i++){
-			for(int j = 0; j < vals[0].length;j++){
-				vals[i][j] = counter;
-				counter++;
-			}
-		}
-		
-		
+	
 		
 		tileGrid.setLayout(new GridLayout(gridSize, gridSize));
 		
@@ -64,6 +93,8 @@ public class Game implements ActionListener{
 		frame.setLayout(new BorderLayout());
 		frame.add(tileGrid, BorderLayout.CENTER);
 		
+		
+		
 		frame.setVisible(true);
 	}
 	
@@ -73,10 +104,10 @@ public class Game implements ActionListener{
 		
 		int x = Integer.parseInt( numbers.substring( 0, numbers.indexOf(" ") ) );
 		int y = Integer.parseInt( numbers.substring( numbers.indexOf(" ") + 1 ) );
+		
+		tiles[x][y].setText(String.valueOf(boardVals[x][y]));
+		
 	
-		tiles[x][y].setText(String.valueOf(vals[x][y]));
-		
-		
 	}
 	
 
