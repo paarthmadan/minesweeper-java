@@ -75,12 +75,20 @@ public class Game implements ActionListener{
 	
 	public void actionPerformed(ActionEvent event){
 
-		String numbers = event.getActionCommand();
 		
-		int x = Integer.parseInt( numbers.substring( 0, numbers.indexOf(" ") ) );
-		int y = Integer.parseInt( numbers.substring( numbers.indexOf(" ") + 1 ) );
 		
-		tiles[x][y].setText(String.valueOf(boardVals[x][y]));
+		String action = event.getActionCommand();
+		
+		int x = Integer.parseInt( action.substring( 0, action.indexOf(" ") ) );
+		int y = Integer.parseInt( action.substring( action.indexOf(" ") + 1 ) );
+		
+		if(boardVals[x][y] == '*'){
+			System.out.print("\nRestart");
+		}else{
+			tiles[x][y].setText(String.valueOf(boardVals[x][y]));
+		}
+		
+		
 		
 	
 	}
